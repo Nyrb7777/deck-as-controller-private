@@ -12,8 +12,8 @@ import signal
 import decky
 
 SYSTEM_PYTHON = "/usr/bin/python3"
-DEFAULT_OPTIONS = {"screen_off": True, "pad_haptics": True, "profile": "dualsense_edge",
-                   "connection": "bluetooth"}
+DEFAULT_OPTIONS = {"screen_off": True, "pad_haptics": True, "qam_to_host": False,
+                   "profile": "dualsense_edge", "connection": "bluetooth"}
 # Options that change the daemon's identity or transport; changing them restarts it.
 RESTART_OPTIONS = ("profile", "connection")
 # Must match py_modules/sdcd/profiles (the daemon also reports these once running).

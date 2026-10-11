@@ -123,11 +123,15 @@ them. Tested with Steam on a Mac and on a Linux PC.
 | ⋯              | reserved for the plugin  | reserved for the plugin |
 
 As a Steam Controller every control keeps its own name (A B X Y, View / Menu, Steam, L4 / R4,
-L5 / R5, both trackpads); only **⋯** stays reserved for the plugin.
+L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you turn on
+**Send ⋯ to your device**.
 
 ### Options
 
 - **Turn off screen while connected**
+- **Send ⋯ to your device** (Steam Controller type only): **⋯** works as the controller's own
+  **⋯** button, e.g. to open the Quick Access Menu on a SteamOS PC. **Steam + ⋯** then turns the
+  Deck screen on or off, and holding **⋯** for 2 seconds still stops.
 - **Check for updates** Since the extension is not live on decky store yet, 
   this is a simple way to check if there is an update, to make sure you have the latest features.
 

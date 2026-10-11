@@ -52,6 +52,7 @@ type State = {
     options: {
         screen_off: boolean;
         pad_haptics: boolean;
+        qam_to_host: boolean;
         profile: string;
         connection: "bluetooth" | "usb";
     };
@@ -398,6 +399,8 @@ function Content() {
         }
     };
     const wired = s.options.connection === "usb";
+    const sendsQam =
+        s.options.qam_to_host && s.options.profile === "steam_controller";
     const profiles = wired ? s.profiles.filter((p) => p.usb) : s.profiles;
     const needsUsbMode = wired && !s.running && !s.usb?.active;
     const st = status(s);
@@ -494,7 +497,9 @@ function Content() {
                         description={
                             <Lines
                                 lines={[
-                                    "Tap ⋯ (or screen) to turn the screen on or off.",
+                                    sendsQam
+                                        ? "Tap Steam + ⋯ (or screen) to turn the screen on or off."
+                                        : "Tap ⋯ (or screen) to turn the screen on or off.",
                                     "Hold ⋯ for 2 seconds to stop.",
                                     ...(wired
                                         ? []
@@ -539,6 +544,16 @@ function Content() {
                             checked={s.options.screen_off}
                             onChange={async (v) =>
                                 setState(await setOption("screen_off", v))
+                            }
+                        />
+                    </PanelSectionRow>
+                    <PanelSectionRow>
+                        <ToggleField
+                            label="Send ⋯ to your device"
+                            description="Steam Controller type only. Steam + ⋯ then turns the Deck screen on or off."
+                            checked={s.options.qam_to_host}
+                            onChange={async (v) =>
+                                setState(await setOption("qam_to_host", v))
                             }
                         />
                     </PanelSectionRow>
