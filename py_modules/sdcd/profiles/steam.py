@@ -70,7 +70,7 @@ def _click_intensity(gain_db: int) -> int:
 
 _BUTTONS = {
     "a": 0x00000001, "b": 0x00000002, "x": 0x00000004, "y": 0x00000008,
-    "r3": 0x00000020, "menu": 0x00000040, "r4": 0x00000080,
+    "qam": 0x00000010, "r3": 0x00000020, "menu": 0x00000040, "r4": 0x00000080,
     "r5": 0x00000100, "r1": 0x00000200, "down": 0x00000400, "right": 0x00000800,
     "left": 0x00001000, "up": 0x00002000, "view": 0x00004000, "l3": 0x00008000,
     "steam": 0x00010000, "l4": 0x00020000, "l5": 0x00040000, "l1": 0x00080000,
@@ -140,6 +140,7 @@ class SteamController(Profile):
     provider = "Valve"
     descriptor = DESCRIPTOR
     host_haptics = True
+    qam_button = True
 
     def __init__(self):
         self.command = bytes(2)  # last feature command from the host, without the report ID

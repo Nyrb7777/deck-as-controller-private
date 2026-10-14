@@ -5,7 +5,7 @@ Talks to the Decky plugin over stdio using JSON lines:
   stdin  commands: {"cmd": "pair"} | {"cmd": "stop"} | {"cmd": "screen"}
                    {"cmd": "connect", "address": str (optional)}
                    {"cmd": "forget", "address": str}
-                   {"cmd": "options", "screen_off": bool, "pad_haptics": bool}
+                   {"cmd": "options", "screen_off": bool, "pad_haptics": bool, "qam_to_host": bool}
   stdout events:   {"type": "state", ...} | {"type": "error", "message": str}
                    {"type": "stopped", "reason": str}
 The controller type ("profile") sets the Bluetooth identity, so it's fixed for
@@ -37,7 +37,7 @@ QAM_TAP_MAX = 0.6  # seconds: tap ⋯ toggles the screen
 QAM_HOLD_STOP = 2.0  # seconds: hold ⋯ stops controller mode
 BATTERY = "/sys/class/power_supply/BAT1"
 BT_ADDRESS = "/sys/class/bluetooth/hci0/address"
-RUNTIME_OPTIONS = ("screen_off", "pad_haptics")
+RUNTIME_OPTIONS = ("screen_off", "pad_haptics", "qam_to_host")
 USB_POLL = 0.5  # seconds between checks for a computer on the USB cable
 
 
@@ -94,7 +94,7 @@ def bt_address_bytes() -> bytes:
 
 class Daemon:
     def __init__(self, settings_dir: str, options: dict):
-        self.options = {"screen_off": True, "pad_haptics": True,
+        self.options = {"screen_off": True, "pad_haptics": True, "qam_to_host": False,
                         "profile": DEFAULT_PROFILE, "connection": "bluetooth", **options}
         self.usb = self.options["connection"] == "usb"
         self.profile = get_profile(self.options["profile"])
@@ -432,6 +432,7 @@ class Daemon:
 
     def _read_deck(self, link: hid.Link | usb.Link, deck: DeckController, latest: SharedInput):
         qam_down_at = None
+        qam_ours = True  # the current ⋯ press is for the plugin, not for the host
         last_config = time.monotonic()
         pads_clicked = (False, False)
         while link.alive.is_set():
@@ -448,6 +449,13 @@ class Daemon:
             state = DeckInput.parse(raw) if raw else None
             if state is None:
                 continue
+            # ⋯ (QAM) is ours unless the option passes it on to a controller type
+            # that has the button; then Steam + ⋯ is ours instead.
+            qam = state.qam
+            if qam and qam_down_at is None:
+                qam_ours = (not (self.options["qam_to_host"] and self.profile.qam_button)
+                            or state.steam)
+            state.qam = qam and not qam_ours
             latest.update(state)
             link.notify_input()
 
@@ -461,16 +469,16 @@ class Daemon:
                         _safe(deck.click_pulse, left)
             pads_clicked = clicked
 
-            # ⋯ (QAM) is reserved for us: tap toggles the screen, hold stops.
-            if state.qam and qam_down_at is None:
+            # Our ⋯ press: tap toggles the screen. Holding ⋯ always stops.
+            if qam and qam_down_at is None:
                 qam_down_at = now
-            elif state.qam and now - qam_down_at >= QAM_HOLD_STOP:
+            elif qam and now - qam_down_at >= QAM_HOLD_STOP:
                 _safe(deck.rumble, 0, 200)
                 time.sleep(0.15)
                 self.stop("stopped from the Deck")
                 return
-            elif not state.qam and qam_down_at is not None:
-                if now - qam_down_at <= QAM_TAP_MAX:
+            elif not qam and qam_down_at is not None:
+                if qam_ours and now - qam_down_at <= QAM_TAP_MAX:
                     self.toggle_screen()
                 qam_down_at = None
 

@@ -52,6 +52,7 @@ type State = {
     options: {
         screen_off: boolean;
         pad_haptics: boolean;
+        qam_to_host: boolean;
         profile: string;
         connection: "bluetooth" | "usb";
     };
@@ -398,6 +399,9 @@ function Content() {
         }
     };
     const wired = s.options.connection === "usb";
+    // Only the Steam Controller has a ⋯ button of its own to pass the Deck's to.
+    const hasQam = s.options.profile === "steam_controller";
+    const sendsQam = hasQam && s.options.qam_to_host;
     const profiles = wired ? s.profiles.filter((p) => p.usb) : s.profiles;
     const needsUsbMode = wired && !s.running && !s.usb?.active;
     const st = status(s);
@@ -494,7 +498,9 @@ function Content() {
                         description={
                             <Lines
                                 lines={[
-                                    "Tap ⋯ (or screen) to turn the screen on or off.",
+                                    sendsQam
+                                        ? "Press Steam + ⋯ or tap the screen to turn the screen on or off."
+                                        : "Press ⋯ or tap the screen to turn the screen on or off.",
                                     "Hold ⋯ for 2 seconds to stop.",
                                     ...(wired
                                         ? []
@@ -542,6 +548,18 @@ function Content() {
                             }
                         />
                     </PanelSectionRow>
+                    {hasQam && (
+                        <PanelSectionRow>
+                            <ToggleField
+                                label="Send ⋯ to your device"
+                                description="Steam + ⋯ then turns the Deck screen on or off."
+                                checked={s.options.qam_to_host}
+                                onChange={async (v) =>
+                                    setState(await setOption("qam_to_host", v))
+                                }
+                            />
+                        </PanelSectionRow>
+                    )}
                 </PanelSection>
             </PanelSection>
 

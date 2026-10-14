@@ -34,6 +34,8 @@ class Profile:
     report_interval: float = 0.012
     # The host drives the trackpad haptics itself, so the Deck adds none of its own.
     host_haptics: bool = False
+    # The controller has a ⋯ button of its own, so the Deck's can be passed on.
+    qam_button: bool = False
     # Wired (USB gadget) support: the controller's USB HID descriptor, or empty if
     # this type only works over Bluetooth.
     usb_descriptor: bytes = b""
