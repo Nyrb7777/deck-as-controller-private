@@ -25,7 +25,7 @@ import { FaGamepad } from "react-icons/fa";
 import { ScreenBlanker, disposeBlanker } from "./blanker";
 
 type Host = { address: string; name: string; profile: string };
-type ProfileInfo = { id: string; label: string; usb: boolean };
+type ProfileInfo = { id: string; label: string; usb: boolean; qam: boolean };
 // USB mode = the BIOS option "USB Dual Role Device". active: on right now.
 // configured: what the next boot uses, or null if it can't be switched from here.
 type UsbStatus = {
@@ -405,8 +405,8 @@ function Content() {
         }
     };
     const wired = s.options.connection === "usb";
-    // Only the Steam Controller has a ⋯ button of its own to pass the Deck's to.
-    const hasQam = s.options.profile === "steam_controller";
+    // Only types with a ⋯ button of their own can take the Deck's.
+    const hasQam = !!s.profiles.find((p) => p.id === s.options.profile)?.qam;
     const sendsQam = hasQam && s.options.qam_to_host;
     const profiles = wired ? s.profiles.filter((p) => p.usb) : s.profiles;
     const needsUsbMode = wired && !s.running && !s.usb?.active;

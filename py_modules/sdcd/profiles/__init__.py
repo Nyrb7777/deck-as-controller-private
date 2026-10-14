@@ -11,8 +11,10 @@ DEFAULT_PROFILE = "dualsense_edge"
 
 
 def profile_list() -> list[dict]:
-    """The types for the frontend. usb: the type also works over a USB cable."""
-    return [{"id": p.id, "label": p.label, "usb": bool(p.usb_descriptor)} for p in PROFILES.values()]
+    """The types for the frontend. usb: the type also works over a USB cable.
+    qam: the type has a ⋯ button the Deck's can be passed on to."""
+    return [{"id": p.id, "label": p.label, "usb": bool(p.usb_descriptor), "qam": p.qam_button}
+            for p in PROFILES.values()]
 
 
 def get_profile(profile_id: str) -> Profile:
