@@ -10,20 +10,14 @@ import os
 import signal
 
 import decky
+from sdcd.profiles import DEFAULT_PROFILE, profile_list
 
 SYSTEM_PYTHON = "/usr/bin/python3"
 DEFAULT_OPTIONS = {"screen_off": True, "pad_haptics": True, "qam_to_host": False,
-                   "profile": "dualsense_edge", "connection": "bluetooth"}
+                   "profile": DEFAULT_PROFILE, "connection": "bluetooth"}
 # Options that change the daemon's identity or transport; changing them restarts it.
 RESTART_OPTIONS = ("profile", "connection")
-# Must match py_modules/sdcd/profiles (the daemon also reports these once running).
-# usb: the type also works over a USB cable.
-PROFILES = [
-    {"id": "dualsense", "label": "PS5", "usb": True},
-    {"id": "dualsense_edge", "label": "PS5 Edge (back buttons)", "usb": True},
-    {"id": "xbox_elite", "label": "Xbox Elite (back buttons)", "usb": False},
-    {"id": "steam_controller", "label": "Steam Controller (trackpads, back buttons)", "usb": False},
-]
+PROFILES = profile_list()
 USB_PROFILES = [p["id"] for p in PROFILES if p["usb"]]
 
 # Restarting bluetoothd makes WirePlumber briefly unresponsive. If Steam runs

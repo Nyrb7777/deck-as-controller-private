@@ -16,6 +16,10 @@ class Encoder:
     def encode(self, state: DeckInput | None, battery: Battery) -> bytes:
         raise NotImplementedError
 
+    def handle_output(self, msg: bytes, mac: bytes):
+        """A host output message (0xA2 ...) on this connection. For profiles that
+        answer the host: queue the reply and send it from the next encode()."""
+
 
 class Profile:
     """An emulated controller type: its Bluetooth identity and report protocol."""
@@ -55,6 +59,11 @@ class Profile:
         rumble stops by itself after it), or None to run until the host says stop.
         """
         return None
+
+    def host_disconnect(self, msg: bytes) -> bool:
+        """Whether a host output message tells the controller to disconnect (e.g. the
+        host going to sleep)."""
+        return False
 
     def set_feature(self, report: bytes):
         """The host wrote a feature report (`report` starts with the report ID)."""

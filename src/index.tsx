@@ -180,6 +180,12 @@ function status(s: State): { title: string; hint?: string } {
         case "starting":
             return { title: "Starting…" };
         case "pairing":
+            if (s.options.profile === "switch_pro") {
+                return {
+                    title: "Ready to pair",
+                    hint: "On a Switch, open Controllers → Change Grip/Order. On other devices, open Bluetooth settings and pick “Pro Controller”.",
+                };
+            }
             return {
                 title: "Ready to pair",
                 hint: `On your device, open Bluetooth settings and pick the Deck. It shows up as a ${profileName(s, s.options.profile)} controller.`,

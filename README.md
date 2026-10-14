@@ -3,8 +3,9 @@
 https://github.com/user-attachments/assets/07d785e7-5d3b-4eb8-ae28-92e55b4d503f
 
 A [Decky Loader](https://decky.xyz) plugin that turns your Steam Deck into a controller for your
-Mac, iPad or PC, wirelessly over Bluetooth or wired over a USB cable. Nothing needs to be
-installed on the other device: the Deck shows up as a PS5, Xbox or Steam Controller.
+Mac, iPad, PC or Nintendo Switch, wirelessly over Bluetooth or wired over a USB cable. Nothing
+needs to be installed on the other device: the Deck shows up as a PS5, Xbox, Switch Pro Controller
+or Steam Controller.
 
 **This is still a very early build, expect latency and connection issues, specially with untested devices.**
 
@@ -16,9 +17,10 @@ See [Tested devices](#tested-devices) for what others have tried.
 
 ## Features
 
-- **Four controller types:** PS5 (DualSense), PS5 Edge, Xbox Elite Series 2, and Steam
-  Controller (2026). PS5 Edge carries all four Deck back buttons; Steam Controller carries every
-  Deck control to Steam on the other device.
+- **Five controller types:** PS5 (DualSense), PS5 Edge, Xbox Elite Series 2, Switch Pro
+  Controller, and Steam Controller (2026). PS5 Edge carries all four Deck back buttons; Steam
+  Controller carries every Deck control to Steam on the other device; Switch Pro Controller also
+  works with a Nintendo Switch. See [Nintendo Switch](#nintendo-switch).
 - **Wired mode (USB cable)** as a PS5 or PS5 Edge controller, with much lower latency than
   Bluetooth. See [Wired (USB)](#wired-usb).
 - **Deck screen off while connected.** Tap **⋯** to toggle it; hold **⋯** for 2 seconds to stop
@@ -28,14 +30,14 @@ See [Tested devices](#tested-devices) for what others have tried.
 - **Rumble** (see the table below for where it works).
 - **Trackpads:** the Deck trackpads act as the PS5 touchpad, with a small haptic tick when you
   click them.
-- **Gyro** on the PS5 types.
+- **Gyro** on the PS5 types (and Switch Pro Controller, not tested yet).
 - **Battery level** of the Deck shown on the Mac (PS5 types).
 
 ## Requested Features (under development/research, not all will happen)
-- Use of the Steamdeck's screen as a secondary screen, (think WiiU, 3ds, guides, etc)
-- Nintendo Switch Controller, Xbox 360, PS4 and PS3 Profile
-- BLE connection
 
+- Use of the Steamdeck's screen as a secondary screen, (think WiiU, 3ds, guides, etc)
+- Xbox 360, PS4 and PS3 Profile
+- BLE connection
 
 ## Install
 
@@ -48,24 +50,25 @@ See [Tested devices](#tested-devices) for what others have tried.
 ## Use
 
 1. First make sure you forget the connection between the steamdeck and the device you will be connecting,
-  if the devices have the connection saved the controller won't work.
+   if the devices have the connection saved the controller won't work.
 1. Open **⋯ → Decky → Deck as Controller**, choose a **controller type**, and turn on
    **Use as controller**. **Connect with** is **Wireless (Bluetooth)** by default; for a cable,
    see [Wired (USB)](#wired-usb).
-2. The first time, the Deck is ready to pair. On your Device(Mac, Windows, Linux computer, also works on Ipad and iphone),
-   open Bluetooth settings and connect to the controller that appears (e.g. "DualSense Edge Wireless Controller") it can 
+1. The first time, the Deck is ready to pair. On your Device(Mac, Windows, Linux computer, also works on Ipad and iphone),
+   open Bluetooth settings and connect to the controller that appears (e.g. "DualSense Edge Wireless Controller") it can
    take from 30 seconds to 1 minutes to show.
-3. After that, turning the plugin on reconnects to the device automatically.
+1. After that, turning the plugin on reconnects to the device automatically.
 
 While connected, the Deck's controls go to your device:
 
-| On the Deck                         | Does                                     |
-| ----------------------------------- | ---------------------------------------- |
-| Tap **⋯** (or the screen)           | Turn the Deck screen on or off           |
-| Hold **⋯** for 2 seconds            | Stop and give the Deck its controls back |
+| On the Deck               | Does                                     |
+| ------------------------- | ---------------------------------------- |
+| Tap **⋯** (or the screen) | Turn the Deck screen on or off           |
+| Hold **⋯** for 2 seconds  | Stop and give the Deck its controls back |
 
 **Switching controller types:** your device remembers the Deck as the type it was paired as.
-To switch, remove the Deck from your device's Bluetooth settings, choose the new type, tap
+To switch, remove the Deck from your device's Bluetooth settings (on a Nintendo Switch:
+**System Settings → Controllers and Sensors → Disconnect Controllers**), choose the new type, tap
 **Pair a new device**, and pair again.
 
 ### Wired (USB)
@@ -76,7 +79,7 @@ against 80-140 ms over Bluetooth, and tested games felt lag-free.
 
 1. Set **Connect with** to **Wired (USB cable)**.
 2. The first time, tap **Turn on USB mode** and confirm. The Deck restarts. USB mode lets the
-   Deck's USB-C port act as a device; it's the BIOS option *USB Dual Role Device*.
+   Deck's USB-C port act as a device; it's the BIOS option _USB Dual Role Device_.
 3. Turn on **Use as controller** and connect the Deck to your computer with a USB-C cable. It
    connects within a second, and again whenever you replug the cable.
 
@@ -89,18 +92,32 @@ versions the plugin shows how to turn it on in the BIOS instead: with the Deck o
 **Volume +** and press **Power**, open **Setup Utility**, then **Advanced → USB Configuration →
 USB Dual Role Device → DRD**.
 
+### Nintendo Switch
+
+With the **Switch Pro Controller** type the Deck pairs with a Nintendo Switch like a real Pro
+Controller, over Bluetooth.
+
+1. In the plugin, set **Connect with** to **Wireless (Bluetooth)** and choose **Switch Pro
+   Controller** as the controller type.
+2. Turn on **Use as controller**.
+3. Tap **Pair a new device**. The Deck is now discoverable.
+4. On the Switch, open **Controllers → Change Grip/Order**. The Switch finds the Deck and pairs with it like any other controller.
+5. Once the Switch shows the "controller" then you can press both shoulder buttons to complete the pairing, like any other controller on the switch.
+
+The face buttons follow the Switch layout by position: the Deck's bottom button (A) is the Switch's B, the right one (B) is A, the left one (X) is Y and the top one (Y) is X.
+
 ### Which type to pick
 
-On a Mac, **PS5 Edge** is the best all-round choice. Tested results:
+On a Mac, **PS5 Edge** is the best all-round choice and **Switch Pro Controller** is a strong second. Tested results:
 
-|                                                                         | PS5 / PS5 Edge | Xbox Elite      | Steam Controller |
-| ----------------------------------------------------------------------- | -------------- | --------------- | ---------------- |
-| Steam and games played through it (e.g. Baldur's Gate 3, Hades)         | ✅             | ✅              | ✅               |
-| Mac games that read controllers directly (e.g. Hollow Knight: Silksong) | ✅             | ❌ not detected | ❌ not detected  |
-| Rumble from Steam (Steam's test page, Steam Input games)                | ❌             | ✅              | ✅               |
-| Rumble from Mac games using Apple's controller support                  | ✅             | ✅              | –                |
-| Back buttons                                                            | PS5 Edge       | Steam only      | ✅               |
-
+|                                                                         | PS5 / PS5 Edge | Switch Pro Controller | Xbox Elite      | Steam Controller |
+| ----------------------------------------------------------------------- | -------------- | --------------------- | --------------- | ---------------- |
+| Steam and games played through it (e.g. Baldur's Gate 3, Hades)         | ✅             | ✅                    | ✅              | ✅               |
+| Mac games that read controllers directly (e.g. Hollow Knight: Silksong) | ✅             | ✅                    | ❌ not detected | ❌ not detected  |
+| Rumble from Steam (Steam's test page, Steam Input games)                | ❌             | not tested            | ✅              | ✅               |
+| Rumble from Mac games using Apple's controller support                  | ✅             | not tested            | ✅              | –                |
+| Gyro                                                                    | ✅             | not tested            | –               | ✅               |
+| Back buttons                                                            | PS5 Edge       | ❌ (L4 = Capture)     | Steam only      | ✅               |
 
 **Steam Controller** is for playing through Steam (including Steam on a Linux or Windows PC).
 The Deck has the same controls as the 2026 Steam Controller, so Steam sees both sticks, both
@@ -112,15 +129,16 @@ them. Tested with Steam on a Mac and on a Linux PC.
 
 ### Button mapping
 
-| Deck           | PS5 / PS5 Edge           | Xbox Elite              |
-| -------------- | ------------------------ | ----------------------- |
-| A B X Y        | ✕ ○ □ △                  | A B X Y                 |
-| View / Menu    | Create / Options         | View / Menu             |
-| Steam          | PS                       | Xbox                    |
-| Trackpad click | Touchpad click           | –                       |
-| L4 / R4        | Edge left / right Fn     | Paddles P3 / P1         |
-| L5 / R5        | Edge left / right paddle | Paddles P4 / P2         |
-| ⋯              | reserved for the plugin  | reserved for the plugin |
+| Deck           | PS5 / PS5 Edge           | Xbox Elite              | Switch Pro Controller   |
+| -------------- | ------------------------ | ----------------------- | ----------------------- |
+| A B X Y        | ✕ ○ □ △                  | A B X Y                 | B A Y X                 |
+| L2 / R2        | L2 / R2                  | LT / RT                 | ZL / ZR (on/off)        |
+| View / Menu    | Create / Options         | View / Menu             | − / +                   |
+| Steam          | PS                       | Xbox                    | Home                    |
+| Trackpad click | Touchpad click           | –                       | –                       |
+| L4 / R4        | Edge left / right Fn     | Paddles P3 / P1         | Capture / –             |
+| L5 / R5        | Edge left / right paddle | Paddles P4 / P2         | –                       |
+| ⋯              | reserved for the plugin  | reserved for the plugin | reserved for the plugin |
 
 As a Steam Controller every control keeps its own name (A B X Y, View / Menu, Steam, L4 / R4,
 L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you turn on
@@ -132,7 +150,7 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
 - **Send ⋯ to your device** (Steam Controller type only): **⋯** works as the controller's own
   **⋯** button, e.g. to open the Quick Access Menu on a SteamOS PC. **Steam + ⋯** then turns the
   Deck screen on or off, and holding **⋯** for 2 seconds still stops.
-- **Check for updates** Since the extension is not live on decky store yet, 
+- **Check for updates** Since the extension is not live on decky store yet,
   this is a simple way to check if there is an update, to make sure you have the latest features.
 
 ## Known limitations
@@ -140,9 +158,10 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
 - **Steam doesn't rumble the PS5 types.** Steam never sends rumble to them over Bluetooth, so
   Steam's rumble test and games that rumble through Steam Input stay silent. Use Xbox Elite if
   you need rumble in those.
-- **Some Mac games only work with the PS5 types.** Native Mac games that read controllers
-  through Apple's support, such as Hollow Knight and Silksong, don't see the Steam Controller
-  type at all, and may not detect Xbox Elite (below). Pick PS5 Edge for those.
+- **Some Mac games only work with the PS5 and Switch Pro Controller types.** Native Mac games
+  that read controllers through Apple's support, such as Hollow Knight and Silksong, don't see
+  the Steam Controller type at all, and may not detect Xbox Elite (below). Pick PS5 Edge or
+  Switch Pro Controller for those.
 - **Some Mac games don't detect Xbox Elite.** macOS keeps the name the Deck first paired with
   (e.g. "DualSense Wireless Controller") for its Bluetooth address, even after you forget it,
   and passes that name to games. Games that recognize controllers by name, like Silksong, then
@@ -158,8 +177,10 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
   uses the Deck as a speaker. Wired mode leaves the Deck's Bluetooth alone.
 - **Turning the plugin on or off wirelessly restarts the Deck's Bluetooth**, which drops any
   Bluetooth devices connected to the Deck for a moment.
-- **Wired mode is PS5 and PS5 Edge only.** The Xbox Elite and Steam Controller types work over
-  Bluetooth only.
+- **Wired mode is PS5 and PS5 Edge only.** The Xbox Elite, Switch Pro Controller and Steam
+  Controller types work over Bluetooth only.
+- **Switch Pro Controller has fewer controls than the Deck.** ZL / ZR are on/off (the real
+  controller's triggers aren't analog), the trackpads do nothing, and only L4 is mapped (to Capture).
 - **USB mode can only be switched from the plugin on known BIOS versions** (Deck OLED 512Gb, F7G0114
   so far), because the setting's location in the firmware differs between versions. The BIOS
   setup screen keeps showing XHCI while the plugin has USB mode on; saving settings there turns
@@ -170,15 +191,17 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
 Reports from the developer and from users. Something missing or different for you? Open an
 [issue](https://github.com/jmedina21/deck-as-controller/issues).
 
-| Deck | Connected to                 | Controller type  | Result                                                                                         | Source                                                         |
-| ---- | ---------------------------- | ---------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| OLED | Mac (macOS 27), Steam        | all four         | ✅ Works, see [Which type to pick](#which-type-to-pick)                                        | [@jmedina21](https://github.com/jmedina21)                                                      |
-| OLED | Mac (macOS 27), native games | PS5 / PS5 Edge   | ✅ Works                                                                                       | [@jmedina21](https://github.com/jmedina21)                                                      |
-| OLED | iPad Mini 7 (iOS 27)         | Xbox Elite       | ✅ Works                                                                                       | [@jmedina21](https://github.com/jmedina21)                                                      |
-| OLED | Mac (macOS 27), USB cable    | PS5 / PS5 Edge   | ✅ Works in Steam and native games, including back buttons, rumble and replugging              | [@jmedina21](https://github.com/jmedina21)                                                      |
-| –    | Steam Frame                  | all              | ✅ Works                                                                                       | [#3](https://github.com/jmedina21/deck-as-controller/issues/3) |
-| LCD  | Linux PC (NixOS)             | PS5 Edge         | ✅ Works, including trackpads and back buttons. Remove any old pairing on both sides first.    | [#4](https://github.com/jmedina21/deck-as-controller/issues/4) |
-| –    | Linux PC (CachyOS), Steam    | Steam Controller | ⚠️ Works for one user; another's pairing failed with an authentication error                    | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
+| Deck | Connected to                 | Controller type       | Result                                                                                      | Source                                                                                                   |
+| ---- | ---------------------------- | --------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| OLED | Mac (macOS 27), Steam        | all five              | ✅ Works, see [Which type to pick](#which-type-to-pick)                                     | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), native games | PS5 / PS5 Edge        | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), native games | Switch Pro Controller | ✅ Works (Hollow Knight)                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | iPad Mini 7 (iOS 27)         | Xbox Elite            | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Nintendo Switch              | Switch Pro Controller | ✅ Works, see [Nintendo Switch](#nintendo-switch)                                           | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), USB cable    | PS5 / PS5 Edge        | ✅ Works in Steam and native games, including back buttons, rumble and replugging           | [@jmedina21](https://github.com/jmedina21)                                                               |
+| –    | Steam Frame                  | all                   | ✅ Works                                                                                    | [#3](https://github.com/jmedina21/deck-as-controller/issues/3)                                           |
+| LCD  | Linux PC (NixOS)             | PS5 Edge              | ✅ Works, including trackpads and back buttons. Remove any old pairing on both sides first. | [#4](https://github.com/jmedina21/deck-as-controller/issues/4)                                           |
+| –    | Linux PC (CachyOS), Steam    | Steam Controller      | ⚠️ Works for one user; another's pairing failed with an authentication error                | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
 
 ## How it works
 
@@ -189,7 +212,7 @@ The plugin's backend runs a small daemon with the Deck's system Python:
   Stopping the plugin, or rebooting, restores the stock setup.
 - **USB:** in wired mode the Deck's USB-C port acts as a USB device (Linux USB gadget) that
   presents a DualSense's own USB descriptor. USB mode is turned on by changing the firmware's copy
-  of the *USB Dual Role Device* setting (one byte in the `AmdSetup` UEFI variable), which takes
+  of the _USB Dual Role Device_ setting (one byte in the `AmdSetup` UEFI variable), which takes
   effect at the next boot. The original variable is backed up first.
 - **Input:** takes exclusive access to the built-in controller over USB, so Steam on the Deck
   stops reacting to it, and translates its reports into the chosen controller's format.
