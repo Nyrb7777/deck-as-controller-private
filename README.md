@@ -30,7 +30,7 @@ See [Tested devices](#tested-devices) for what others have tried.
 - **Rumble** (see the table below for where it works).
 - **Trackpads:** the Deck trackpads act as the PS5 touchpad, with a small haptic tick when you
   click them.
-- **Gyro** on the PS5 types.
+- **Gyro** on the PS5 types and Steam Controller.
 - **Battery level** of the Deck shown on the Mac (PS5 types).
 
 ## Requested Features (under development/research, not all will happen)
@@ -61,10 +61,10 @@ See [Tested devices](#tested-devices) for what others have tried.
 
 While connected, the Deck's controls go to your device:
 
-| On the Deck               | Does                                     |
-| ------------------------- | ---------------------------------------- |
-| Tap **⋯** (or the screen) | Turn the Deck screen on or off           |
-| Hold **⋯** for 2 seconds  | Stop and give the Deck its controls back |
+| On the Deck               | Does                                                                                                                                          |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tap **⋯** (or the screen) | Turn the Deck screen on or off (this option can be changed if you are using it on a SteamOS pc and which to use the ... button as what it is) |
+| Hold **⋯** for 2 seconds  | Stop and give the Deck its controls back                                                                                                      |
 
 **Switching controller types:** your device remembers the Deck as the type it was paired as.
 To switch, remove the Deck from your device's Bluetooth settings (on a Nintendo Switch:
@@ -201,7 +201,8 @@ Reports from the developer and from users. Something missing or different for yo
 | OLED | Mac (macOS 27), USB cable    | PS5 / PS5 Edge        | ✅ Works in Steam and native games, including back buttons, rumble and replugging           | [@jmedina21](https://github.com/jmedina21)                                                               |
 | –    | Steam Frame                  | all                   | ✅ Works                                                                                    | [#3](https://github.com/jmedina21/deck-as-controller/issues/3)                                           |
 | LCD  | Linux PC (NixOS)             | PS5 Edge              | ✅ Works, including trackpads and back buttons. Remove any old pairing on both sides first. | [#4](https://github.com/jmedina21/deck-as-controller/issues/4)                                           |
-| –    | Linux PC (CachyOS), Steam    | Steam Controller      | ⚠️ Works for one user; another's pairing failed with an authentication error                | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
+| –    | Linux PC (CachyOS), Steam    | Steam Controller      | ✅ Works                                                                                    | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
+| LCD  | Windows 11                   | Steam Controller      | ✅ Works                                                                                    | @SrStylus, [#20](https://github.com/jmedina21/deck-as-controller/issues/20)                              |
 
 ## How it works
 
