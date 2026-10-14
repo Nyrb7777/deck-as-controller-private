@@ -30,7 +30,7 @@ See [Tested devices](#tested-devices) for what others have tried.
 - **Rumble** (see the table below for where it works).
 - **Trackpads:** the Deck trackpads act as the PS5 touchpad, with a small haptic tick when you
   click them.
-- **Gyro** on the PS5 types (and Switch Pro Controller, not tested yet).
+- **Gyro** on the PS5 types.
 - **Battery level** of the Deck shown on the Mac (PS5 types).
 
 ## Requested Features (under development/research, not all will happen)
@@ -116,7 +116,7 @@ On a Mac, **PS5 Edge** is the best all-round choice and **Switch Pro Controller*
 | Mac games that read controllers directly (e.g. Hollow Knight: Silksong) | ✅             | ✅                    | ❌ not detected | ❌ not detected  |
 | Rumble from Steam (Steam's test page, Steam Input games)                | ❌             | not tested            | ✅              | ✅               |
 | Rumble from Mac games using Apple's controller support                  | ✅             | not tested            | ✅              | –                |
-| Gyro                                                                    | ✅             | not tested            | –               | ✅               |
+| Gyro                                                                    | ✅             | –                     | –               | ✅               |
 | Back buttons                                                            | PS5 Edge       | ❌ (L4 = Capture)     | Steam only      | ✅               |
 
 **Steam Controller** is for playing through Steam (including Steam on a Linux or Windows PC).

@@ -39,19 +39,15 @@ DESCRIPTOR = bytes([
 
 # Sticks are 12 bit.
 STICK_CENTER, STICK_RANGE = 0x800, 0x700
-# Hosts read accel as 4 g per ACCEL_SENS
-# and gyro as 936 deg/s per GYRO_SENS, the values of real controllers.
+# IMU calibration of real controllers, for hosts that read it (no IMU data is sent).
 ACCEL_SENS, GYRO_SENS = 16384, 13371
-# Deck IMU: gyro 16.384 LSB/(deg/s), accel 16384 LSB/g.
-GYRO_SCALE = GYRO_SENS / 936 / 16.384
-ACCEL_SCALE = ACCEL_SENS / 4 / 16384
 # Stick deadzone/range parameters, as in real controllers' flash.
 STICK_PARAMS = bytes.fromhex("0f30619630f3d41454411554c7799c333663")
 COLOURS = bytes([0x32, 0x32, 0x32, 0xFF, 0xFF, 0xFF, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32])  # body, buttons, grips
 
 # Subcommands (output report 0x01, byte 10)
 SUB_DEVICE_INFO, SUB_INPUT_MODE, SUB_TRIGGER_ELAPSED = 0x02, 0x03, 0x04
-SUB_HCI_STATE, SUB_SPI_READ, SUB_IMU_ENABLE = 0x06, 0x10, 0x40
+SUB_HCI_STATE, SUB_SPI_READ = 0x06, 0x10
 HCI_DISCONNECT = 0x00  # SUB_HCI_STATE argument: disconnect, sent by a Switch going to sleep
 
 
@@ -88,10 +84,6 @@ def _stick(x: int, y: int) -> bytes:
                    max(0, min(0xFFF, round(STICK_CENTER + fy * STICK_RANGE))))
 
 
-def _i16(v: float) -> int:
-    return max(-32768, min(32767, round(v)))
-
-
 def _zl_zr(d: DeckInput) -> tuple[bool, bool]:
     """The analog triggers as the Pro Controller's digital ZL/ZR."""
     return d.l2 or d.lt > 30 << 7, d.r2 or d.rt > 30 << 7
@@ -101,7 +93,6 @@ class SwitchProEncoder(Encoder):
     def __init__(self):
         self.timer = 0
         self.full = False  # host asked for full 0x30 reports
-        self.imu = False
         self.replies: deque[tuple[int, int, bytes]] = deque()  # (ack, subcommand, data)
 
     def handle_output(self, msg: bytes, mac: bytes):
@@ -119,9 +110,6 @@ class SwitchProEncoder(Encoder):
             self.replies.append((0x90, sub, args[:5] + data))
         elif sub == SUB_INPUT_MODE and args:
             self.full = args[0] != 0x3F
-            self.replies.append((0x80, sub, b""))
-        elif sub == SUB_IMU_ENABLE and args:
-            self.imu = bool(args[0])
             self.replies.append((0x80, sub, b""))
         elif sub == SUB_TRIGGER_ELAPSED:
             self.replies.append((0x83, sub, b""))
@@ -149,13 +137,7 @@ class SwitchProEncoder(Encoder):
             r[13], r[14] = ack, sub
             r[15:15 + len(data)] = data
         else:
-            r[0] = 0x30
-            if self.imu and d is not None:
-                # Deck axes -> Switch axes (x forward, y left, z up).
-                sample = struct.pack("<6h",
-                                     _i16(d.ay * ACCEL_SCALE), _i16(-d.ax * ACCEL_SCALE), _i16(d.az * ACCEL_SCALE),
-                                     _i16(d.gy * GYRO_SCALE), _i16(-d.gx * GYRO_SCALE), _i16(d.gz * GYRO_SCALE))
-                r[13:49] = sample * 3
+            r[0] = 0x30  # IMU samples stay zero: no gyro (hosts treat all-zero as no data)
         return bytes(r)
 
     def _fill(self, r: bytearray, d: DeckInput):
