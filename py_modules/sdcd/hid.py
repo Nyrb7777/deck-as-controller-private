@@ -88,13 +88,14 @@ class Link:
     def __init__(self, ctrl: socket.socket, intr: socket.socket, address: str, mac: bytes,
                  profile: Profile, get_report: Callable[[], bytes], has_urgent: Callable[[], bool],
                  on_rumble: Callable[[int, int, float | None], None],
-                 on_haptic: Callable[[bytes], None]):
+                 on_haptic: Callable[[bytes], None], on_output: Callable[[bytes], None]):
         self.ctrl, self.intr, self.address, self.mac = ctrl, intr, address, mac
         self.profile = profile
         self.get_report = get_report
         self.has_urgent = has_urgent
         self.on_rumble = on_rumble
         self.on_haptic = on_haptic
+        self.on_output = on_output
         try:  # send our reports ahead of other traffic on the adapter
             intr.setsockopt(socket.SOL_SOCKET, socket.SO_PRIORITY, 6)
         except OSError:
@@ -205,6 +206,12 @@ class Link:
     def _handle_output(self, msg: bytes):
         """An output (0xA2 + report) or feature (0xA3 + report) report from the host."""
         log.debug("output report %dB: %s", len(msg), msg[:16].hex(" "))
+        if self.profile.host_disconnect(msg):
+            self._host_closed()
+            self.alive.clear()
+            self.notify_input()
+            return
+        self.on_output(msg)
         haptic = self.profile.parse_haptic(msg)
         if haptic is not None:
             self.on_haptic(haptic)

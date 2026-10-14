@@ -27,7 +27,7 @@ from gi.repository import GLib
 
 from . import bluez, hid, usb
 from .deck import DeckController, DeckInput, SharedInput, rebind_all
-from .profiles import DEFAULT_PROFILE, PROFILES, Battery, Encoder, get_profile
+from .profiles import DEFAULT_PROFILE, Battery, Encoder, get_profile, profile_list
 
 log = logging.getLogger("sdcd")
 
@@ -146,8 +146,7 @@ class Daemon:
             state = "idle"
         event = dict(type="state", state=state, host=self.link_name, target=self.target,
                      hosts=self.hosts.items, screen_off=self.screen_off, options=self.options,
-                     profiles=[{"id": p.id, "label": p.label, "usb": bool(p.usb_descriptor)}
-                               for p in PROFILES.values()])
+                     profiles=profile_list())
         if event != self.last_state:
             self.last_state = json.loads(json.dumps(event))  # deep copy
             self.emit(**event)
@@ -376,7 +375,8 @@ class Daemon:
                             get_report=lambda: encoder.encode(latest.take(), self.battery),
                             has_urgent=lambda: latest.urgent,
                             on_rumble=lambda low, high, duration: _safe(deck.rumble, low, high, duration),
-                            on_haptic=lambda cmd: _safe(deck.haptic, cmd))
+                            on_haptic=lambda cmd: _safe(deck.haptic, cmd),
+                            on_output=lambda msg: encoder.handle_output(msg, self.adapter.mac_bytes))
             self.link = link
             self.encoder = encoder
             try:
