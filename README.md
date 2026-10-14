@@ -1,6 +1,6 @@
 # Deck as Controller. (beta build)
 
-https://github.com/user-attachments/assets/07d785e7-5d3b-4eb8-ae28-92e55b4d503f
+https://github.com/user-attachments/assets/716205e4-6ce3-479d-afa4-59589191c727
 
 A [Decky Loader](https://decky.xyz) plugin that turns your Steam Deck into a controller for your
 Mac, iPad, PC or Nintendo Switch, wirelessly over Bluetooth or wired over a USB cable. Nothing
