@@ -20,7 +20,8 @@ GAMEPAD_CLASS = "0x002508"
 RUN_DIR = "/run/sd-controller"
 DROPIN_DIR = "/run/systemd/system/bluetooth.service.d"
 DROPIN = f"{DROPIN_DIR}/sd-controller.conf"
-BLUETOOTHD = "/usr/lib/bluetooth/bluetoothd"
+# SteamOS/Arch ship it under /usr/lib, Fedora-based distros (Bazzite) under /usr/libexec.
+BLUETOOTHD_PATHS = ("/usr/lib/bluetooth/bluetoothd", "/usr/libexec/bluetooth/bluetoothd")
 
 # Stock adapter settings we change, saved so restore_stock() can put them back.
 SAVED_ADAPTER = "/run/sd-controller-adapter.json"
@@ -52,8 +53,16 @@ def set_adapter_prop(props: dbus.Interface, name: str, value, attempts: int = 25
             time.sleep(0.2)
 
 
+def _bluetoothd() -> str:
+    for path in BLUETOOTHD_PATHS:
+        if os.path.exists(path):
+            return path
+    raise RuntimeError("bluetoothd not found in " + ", ".join(BLUETOOTHD_PATHS))
+
+
 def enter_gamepad_mode(profile: Profile):
     """Restart bluetoothd as a gamepad: the profile's identity, no input/hostname/audio plugins."""
+    bluetoothd = _bluetoothd()
     if not gamepad_mode_active() and not os.path.exists(SAVED_ADAPTER):
         props = _adapter_props()
         saved = {name: props.Get("org.bluez.Adapter1", name) for name in SAVED_PROPS}
@@ -76,7 +85,7 @@ def enter_gamepad_mode(profile: Profile):
     # restore bluetoothd can crash WirePlumber.
     with open(DROPIN, "w") as f:
         f.write("[Service]\nExecStart=\n"
-                f"ExecStart={BLUETOOTHD} -P input,hostname,a2dp,avrcp -f {RUN_DIR}/main.conf\n")
+                f"ExecStart={bluetoothd} -P input,hostname,a2dp,avrcp -f {RUN_DIR}/main.conf\n")
     _restart_bluetoothd()
 
 
