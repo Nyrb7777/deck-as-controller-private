@@ -134,6 +134,7 @@ class Link:
         try:
             sndbuf = self.intr.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
             per_report = None
+            report_len = 0
             last_send = 0.0
             interval = self.profile.report_interval
             while self.alive.is_set():
@@ -147,8 +148,11 @@ class Link:
                     self.skipped += 1
                     time.sleep(0.0005)  # poll for the controller's ack
                     continue
+                report = self.get_report()
+                if len(report) != report_len:  # e.g. a ps5 switching to full reports
+                    per_report, report_len = None, len(report)
                 try:
-                    self.intr.send(b"\xA1" + self.get_report(), socket.MSG_DONTWAIT)
+                    self.intr.send(b"\xA1" + report, socket.MSG_DONTWAIT)
                 except BlockingIOError:
                     self.skipped += 1
                     time.sleep(0.0005)
@@ -185,6 +189,7 @@ class Link:
         if kind == 0x4:  # GET_REPORT
             rtype, rid = param & 0x3, msg[1] if len(msg) > 1 else 0
             report = self.profile.feature_report(rid, self.mac) if rtype == 3 else None
+            self.on_output(bytes(msg[:2]))
             return b"\xA3" + report if report else b"\x02"  # DATA | ERR_INVALID_REPORT_ID
         if kind == 0x5:  # SET_REPORT
             if param & 0x3 == 2:  # output report sent on the control channel (e.g. by Steam)

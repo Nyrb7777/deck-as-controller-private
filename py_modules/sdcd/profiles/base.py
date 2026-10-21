@@ -18,7 +18,11 @@ class Encoder:
 
     def handle_output(self, msg: bytes, mac: bytes):
         """A host output message (0xA2 ...) on this connection. For profiles that
-        answer the host: queue the reply and send it from the next encode()."""
+        answer the host: queue the reply and send it from the next encode().
+        Over Bluetooth, GET_REPORT requests (0x4X <report id>) come through here too."""
+
+    def start_bluetooth(self):
+        """This encoder is for a Bluetooth connection (not USB)."""
 
 
 class Profile:
