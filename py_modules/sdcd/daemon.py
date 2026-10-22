@@ -377,6 +377,7 @@ class Daemon:
                             on_rumble=lambda low, high, duration: _safe(deck.rumble, low, high, duration),
                             on_haptic=lambda cmd: _safe(deck.haptic, cmd),
                             on_output=lambda msg: encoder.handle_output(msg, self.adapter.mac_bytes))
+            encoder.start_bluetooth()
             self.link = link
             self.encoder = encoder
             try:

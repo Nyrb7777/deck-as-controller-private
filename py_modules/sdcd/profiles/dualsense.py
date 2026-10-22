@@ -93,6 +93,16 @@ class DualSenseEncoder(Encoder):
         self.counter = 0
         self.touch_ids = [0, 1]  # incremented on each new contact
         self.was_touching = [False, False]
+        self.full = True
+
+    def start_bluetooth(self):
+        # a real one sends the plain 0x01 report until the host asks for the
+        # sony stuff, hosts without a ps5 driver (android, android tv) only read that one
+        self.full = False
+
+    def handle_output(self, msg: bytes, mac: bytes):
+        if msg[:2] == b"\xA2\x31" or (msg[0] & 0xF0 == 0x40 and msg[1:2] in (b"\x05", b"\x09", b"\x20")):
+            self.full = True
 
     def encode(self, d: DeckInput | None, battery: Battery) -> bytes:
         r = bytearray(INPUT_REPORT_LEN)
@@ -112,6 +122,9 @@ class DualSenseEncoder(Encoder):
 
         if d is not None:
             self._fill(st, d)
+        if not self.full:
+            return bytes([0x01, st[0], st[1], st[2], st[3], st[7], st[8],
+                          (st[9] & 0x03) | ((self.counter << 2) & 0xFC), st[4], st[5]])
         return _with_crc(0xA1, r)
 
     def _fill(self, st: memoryview, d: DeckInput):
