@@ -3,7 +3,7 @@
 https://github.com/user-attachments/assets/716205e4-6ce3-479d-afa4-59589191c727
 
 A [Decky Loader](https://decky.xyz) plugin that turns your Steam Deck into a controller for your
-Mac, iPad, PC or Nintendo Switch, wirelessly over Bluetooth or wired over a USB cable. Nothing
+Mac, iPad, PC, Android device or Nintendo Switch, wirelessly over Bluetooth or wired over a USB cable. Nothing
 needs to be installed on the other device: the Deck shows up as a PS5, Xbox, Switch Pro Controller
 or Steam Controller.
 
@@ -22,7 +22,7 @@ See [Tested devices](#tested-devices) for what others have tried.
   Controller carries every Deck control to Steam on the other device; Switch Pro Controller also
   works with a Nintendo Switch. See [Nintendo Switch](#nintendo-switch).
 - **Wired mode (USB cable)** as a PS5 or PS5 Edge controller, with much lower latency than
-  Bluetooth. See [Wired (USB)](#wired-usb).
+  Bluetooth, on Mac, Windows and Linux. See [Wired (USB)](#wired-usb).
 - **Deck screen off while connected.** Tap **⋯** to toggle it; hold **⋯** for 2 seconds to stop
   and get the Deck's screen and controls back.
 - **Reconnects automatically** to the last device when you turn the plugin on.
@@ -54,7 +54,7 @@ See [Tested devices](#tested-devices) for what others have tried.
 1. Open **⋯ → Decky → Deck as Controller**, choose a **controller type**, and turn on
    **Use as controller**. **Connect with** is **Wireless (Bluetooth)** by default; for a cable,
    see [Wired (USB)](#wired-usb).
-1. The first time, the Deck is ready to pair. On your Device(Mac, Windows, Linux computer, also works on Ipad and iphone),
+1. The first time, the Deck is ready to pair. On your Device(Mac, Windows, Linux computer, also works on Ipad, iphone and Android),
    open Bluetooth settings and connect to the controller that appears (e.g. "DualSense Edge Wireless Controller") it can
    take from 30 seconds to 1 minutes to show.
 1. After that, turning the plugin on reconnects to the device automatically.
@@ -177,6 +177,8 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
   uses the Deck as a speaker. Wired mode leaves the Deck's Bluetooth alone.
 - **Turning the plugin on or off wirelessly restarts the Deck's Bluetooth**, which drops any
   Bluetooth devices connected to the Deck for a moment.
+- **PS5 types on Android have no gyro, touchpad or back buttons.** Android has no PS5 driver, so
+  like a real DualSense the Deck sends only the basic report there: buttons, sticks and triggers.
 - **Wired mode is PS5 and PS5 Edge only.** The Xbox Elite, Switch Pro Controller and Steam
   Controller types work over Bluetooth only.
 - **Switch Pro Controller has fewer controls than the Deck.** ZL / ZR are on/off (the real
@@ -191,18 +193,23 @@ L5 / R5, both trackpads); only **⋯** stays reserved for the plugin, unless you
 Reports from the developer and from users. Something missing or different for you? Open an
 [issue](https://github.com/jmedina21/deck-as-controller/issues).
 
-| Deck | Connected to                 | Controller type       | Result                                                                                      | Source                                                                                                   |
-| ---- | ---------------------------- | --------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| OLED | Mac (macOS 27), Steam        | all five              | ✅ Works, see [Which type to pick](#which-type-to-pick)                                     | [@jmedina21](https://github.com/jmedina21)                                                               |
-| OLED | Mac (macOS 27), native games | PS5 / PS5 Edge        | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
-| OLED | Mac (macOS 27), native games | Switch Pro Controller | ✅ Works (Hollow Knight)                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
-| OLED | iPad Mini 7 (iOS 27)         | Xbox Elite            | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
-| OLED | Nintendo Switch              | Switch Pro Controller | ✅ Works, see [Nintendo Switch](#nintendo-switch)                                           | [@jmedina21](https://github.com/jmedina21)                                                               |
-| OLED | Mac (macOS 27), USB cable    | PS5 / PS5 Edge        | ✅ Works in Steam and native games, including back buttons, rumble and replugging           | [@jmedina21](https://github.com/jmedina21)                                                               |
-| –    | Steam Frame                  | all                   | ✅ Works                                                                                    | [#3](https://github.com/jmedina21/deck-as-controller/issues/3)                                           |
-| LCD  | Linux PC (NixOS)             | PS5 Edge              | ✅ Works, including trackpads and back buttons. Remove any old pairing on both sides first. | [#4](https://github.com/jmedina21/deck-as-controller/issues/4)                                           |
-| –    | Linux PC (CachyOS), Steam    | Steam Controller      | ✅ Works                                                                                    | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
-| LCD  | Windows 11                   | Steam Controller      | ✅ Works                                                                                    | @SrStylus, [#20](https://github.com/jmedina21/deck-as-controller/issues/20)                              |
+| Deck | Connected to                         | Controller type       | Result                                                                                      | Source                                                                                                   |
+| ---- | ------------------------------------ | --------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| OLED | Mac (macOS 27), Steam                | All                   | ✅ Works, see [Which type to pick](#which-type-to-pick)                                     | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), native games         | PS5 / PS5 Edge        | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), native games         | Switch Pro Controller | ✅ Works (Hollow Knight)                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | iPad Mini 7 (iOS 27)                 | Xbox Elite            | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Nintendo Switch                      | Switch Pro Controller | ✅ Works, see [Nintendo Switch](#nintendo-switch)                                           | [@jmedina21](https://github.com/jmedina21)                                                               |
+| OLED | Mac (macOS 27), USB cable            | PS5 / PS5 Edge        | ✅ Works in Steam and native games, including back buttons, rumble and replugging           | [@jmedina21](https://github.com/jmedina21)                                                               |
+| –    | Steam Frame                          | All                   | ✅ Works                                                                                    | [#3](https://github.com/jmedina21/deck-as-controller/issues/3)                                           |
+| LCD  | Linux PC (NixOS)                     | PS5 Edge              | ✅ Works, including trackpads and back buttons. Remove any old pairing on both sides first. | [#4](https://github.com/jmedina21/deck-as-controller/issues/4)                                           |
+| –    | Linux PC (CachyOS), Steam            | Steam Controller      | ✅ Works                                                                                    | [@SrStylus](https://github.com/SrStylus), [#2](https://github.com/jmedina21/deck-as-controller/issues/2) |
+| LCD  | Windows 11                           | Steam Controller      | ✅ Works                                                                                    | @SrStylus, [#20](https://github.com/jmedina21/deck-as-controller/issues/20)                              |
+| OLED | Linux(SteamOS) PC, Bluetooth and USB | All                   | ✅ Works                                                                                    | [@jmedina21](https://github.com/jmedina21)                                                               |
+| –    | Windows 11, USB cable                | PS5 Edge              | ✅ Works (since v0.6.4)                                                                     | [@SrStylus](https://github.com/SrStylus), [#33](https://github.com/jmedina21/deck-as-controller/pull/33) |
+| –    | Linux PC, USB cable                  | PS5 Edge              | ✅ Works                                                                                    | [@SrStylus](https://github.com/SrStylus), [#33](https://github.com/jmedina21/deck-as-controller/pull/33) |
+| –    | Android                              | PS5                   | ✅ Buttons, sticks and triggers (since v0.6.4)                                              | [@SrStylus](https://github.com/SrStylus), [#34](https://github.com/jmedina21/deck-as-controller/pull/34) |
+| –    | Android                              | Xbox Elite            | ✅ Works                                                                                    | [#32](https://github.com/jmedina21/deck-as-controller/issues/32)                                         |
 
 ## How it works
 
@@ -257,8 +264,7 @@ shows "USB Dual Role Device" and its `Setup` offset (`0x227` on F7G0114).
 
 ## Contributing
 
-Contributions are welcome: bug reports, pull requests, and test results on devices we haven't
-tried yet (Windows, Android, other Linux distributions, other macOS and iPadOS versions).
+Contributions are welcome: bug reports, pull requests, and test results on devices we haven't tried yet.
 
 When reporting a problem, please include your Deck model, the controller type you picked, the
 device you connected to, and the plugin log from `~/homebrew/logs/deck-as-controller/` on the
@@ -268,7 +274,11 @@ Deck. To capture what your device sends to the Deck, see the debug tip under
 ### Contributors
 
 - [@SrStylus](https://github.com/SrStylus): the Steam Controller Profile
-  ([#5](https://github.com/jmedina21/deck-as-controller/pull/5)).
+  ([#5](https://github.com/jmedina21/deck-as-controller/pull/5)), wired mode on Windows
+  ([#33](https://github.com/jmedina21/deck-as-controller/pull/33)) and PS5 types on Android
+  ([#34](https://github.com/jmedina21/deck-as-controller/pull/34)).
+- [@SnakeTheDev](https://github.com/SnakeTheDev): found the USB serial number issue behind
+  wired mode on Windows ([#27](https://github.com/jmedina21/deck-as-controller/pull/27)).
 
 ## License
 
