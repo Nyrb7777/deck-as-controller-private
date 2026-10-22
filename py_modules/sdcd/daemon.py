@@ -332,7 +332,7 @@ class Daemon:
         if not usb.udc_name():
             raise RuntimeError("USB mode is off. Turn it on in the plugin (the Deck restarts), "
                                "or set USB Dual Role Device to DRD in the BIOS.")
-        usb.create_gadget(self.profile)
+        usb.create_gadget(self.profile, bt_address_bytes())
         for _ in range(50):  # /dev/hidg0 appears once udev has seen the gadget
             if os.path.exists(usb.HIDG):
                 break

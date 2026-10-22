@@ -121,7 +121,20 @@ def _write(path: Path, value):
         path.write_text(str(value))
 
 
-def create_gadget(profile: Profile):
+def usb_serial(mac: bytes) -> str:
+    if any(mac):
+        return mac.hex().upper()
+    try:
+        with open("/sys/class/dmi/id/product_uuid") as f:
+            value = f.read().strip().replace("-", "").upper()
+        if value:
+            return value[:16]
+    except OSError:
+        pass
+    return "DECKASCONTROLLER"
+
+
+def create_gadget(profile: Profile, mac: bytes = b""):
     """Present the profile's controller on the USB port (bound to the device controller)."""
     remove_gadget()
     os.system("modprobe libcomposite")
@@ -137,6 +150,8 @@ def create_gadget(profile: Profile):
     strings.mkdir(parents=True)
     _write(strings / "manufacturer", profile.provider)
     _write(strings / "product", profile.bt_name)
+    # windows won't start a device whose serial number string is empty
+    _write(strings / "serialnumber", usb_serial(mac))
     config = GADGET / "configs/c.1"
     config.mkdir(parents=True)
     _write(config / "MaxPower", 500)
