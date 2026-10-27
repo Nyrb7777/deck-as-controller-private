@@ -48,6 +48,7 @@ COLOURS = bytes([0x32, 0x32, 0x32, 0xFF, 0xFF, 0xFF, 0x32, 0x32, 0x32, 0x32, 0x3
 # Subcommands (output report 0x01, byte 10)
 SUB_DEVICE_INFO, SUB_INPUT_MODE, SUB_TRIGGER_ELAPSED = 0x02, 0x03, 0x04
 SUB_HCI_STATE, SUB_SPI_READ = 0x06, 0x10
+SUB_MCU_CONFIG = 0x21
 HCI_DISCONNECT = 0x00  # SUB_HCI_STATE argument: disconnect, sent by a Switch going to sleep
 
 
@@ -94,6 +95,7 @@ class SwitchProEncoder(Encoder):
         self.timer = 0
         self.full = False  # host asked for full 0x30 reports
         self.replies: deque[tuple[int, int, bytes]] = deque()  # (ack, subcommand, data)
+        self.last_simple = self._simple(None)
 
     def handle_output(self, msg: bytes, mac: bytes):
         # a2 01 <counter> <rumble x8> <subcommand> <args...>
@@ -113,6 +115,9 @@ class SwitchProEncoder(Encoder):
             self.replies.append((0x80, sub, b""))
         elif sub == SUB_TRIGGER_ELAPSED:
             self.replies.append((0x83, sub, b""))
+        elif sub == SUB_MCU_CONFIG:
+            self.replies.append((0xA0, sub, bytes([0x01, 0x00, 0xFF, 0x00, 0x08, 0x00, 0x1B, 0x01])
+                                 + bytes(25) + b"\xC8"))
         else:  # player/home lights, rumble enable, low power, ...: just acknowledge
             self.replies.append((0x80, sub, b""))
 
@@ -120,7 +125,11 @@ class SwitchProEncoder(Encoder):
         self.timer = (self.timer + 1) & 0xFF
         reply = self.replies.popleft() if self.replies else None
         if reply is None and not self.full:
-            return self._simple(d)
+            simple = self._simple(d) if d is not None else self.last_simple
+            if simple == self.last_simple:
+                return b""
+            self.last_simple = simple
+            return simple
         r = bytearray(REPORT_LEN)
         r[1] = self.timer
         # Battery: high nibble 8 full, 6 medium, 4 low, 2 critical, 0 empty; +1 charging
